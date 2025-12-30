@@ -1,0 +1,247 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Globe, Instagram, Youtube, Twitter, Mail, ArrowRight, Camera, Film, Palette } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa"; // أيقونة واتس آب
+
+export default function PortfolioDark() {
+  const [lang, setLang] = useState("ar");
+  const [showNav, setShowNav] = useState(true);
+  const lastScrollY = useRef(0);
+
+  const t = {
+    ar: {
+      name: "gad-visuals-portfolio
+",
+      title: "محرر صور وفيديوهات إبداعي",
+      heroTitle: "أحول خيالك إلى واقع بصري",
+      heroDesc: "متخصص في تحرير الفيديو السينمائي ومعالجة الصور الفوتوغرافية بأحدث التقنيات لإبراز جمال مشروعك.",
+      nav: { services: "الخدمات", gallery: "المعراض", contact: "تواصل معي" },
+      servicesList: [
+        { title: "تعديل الصور الاحترافي", desc: "ريتاتش، تصحيح ألوان، دمج، وإزالة الخلفيات بدقة عالية.", icon: Camera },
+        { title: "مونتاج الفيديو", desc: "قص احترافي، انتقالات سينمائية، وتزامن الصوت مع الصورة.", icon: Film },
+        { title: "تلوين سينمائي (Color Grading)", desc: "إضفاء طابع سينمائي وفني على الفيديوهات.", icon: Palette }
+      ],
+      galleryTitle: "أحدث الأعمال",
+      contactTitle: "لنبدأ العمل معاً",
+      form: { email: "البريد الإلكتروني", msg: "تفاصيل المشروع...", send: "إرسال الرسالة" },
+      footer: "جميع الحقوق محفوظة",
+      phones: [
+        { display: "+201030133360", wa: "201030133360" },
+        { display: "01105939987", wa: "201105939987" }
+      ],
+      emails: ["bodygad174@gmail.com", "bodygad999@gmail.com", "bodygad57@gmail.com"]
+    },
+    en: {
+      name: "Abdel Fattah",
+      title: "Creative Photo & Video Editor",
+      heroTitle: "Turning Vision Into Visual Reality",
+      heroDesc: "Specialized in cinematic video editing and high-end photo retouching to bring your projects to life.",
+      nav: { services: "Services", gallery: "Portfolio", contact: "Contact" },
+      servicesList: [
+        { title: "Pro Photo Editing", desc: "Retouching, color correction, composition, and background removal.", icon: Camera },
+        { title: "Video Editing", desc: "Professional cuts, cinematic transitions, and audio syncing.", icon: Film },
+        { title: "Color Grading", desc: "Giving your videos a professional cinematic look and feel.", icon: Palette }
+      ],
+      galleryTitle: "Latest Work",
+      contactTitle: "Let's Work Together",
+      form: { email: "Email Address", msg: "Project details...", send: "Send Message" },
+      footer: "All Rights Reserved",
+      phones: [
+        { display: "+201030133360", wa: "201030133360" },
+        { display: "01105939987", wa: "201105939987" }
+      ],
+      emails: ["bodygad174@gmail.com", "bodygad999@gmail.com", "bodygad57@gmail.com"]
+    },
+  };
+
+  const text = t[lang];
+  const isRTL = lang === "ar";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY.current && window.scrollY > 100) setShowNav(false);
+      else setShowNav(true);
+      lastScrollY.current = window.scrollY;
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("opacity-100", "translate-y-0");
+            entry.target.classList.remove("opacity-0", "translate-y-10");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [lang]);
+
+  const dummyGalleryImages = [
+    { src: "/dummy/img1.jpg", alt: "Cinematic Color Grade", type: "Video" },
+    { src: "/dummy/img2.jpg", alt: "High-End Retouching", type: "Photo" },
+    { src: "/dummy/img3.jpg", alt: "Composition and Effects", type: "Photo" },
+    { src: "/dummy/img4.jpg", alt: "Event Highlights Edit", type: "Video" },
+    { src: "/dummy/img5.jpg", alt: "Product Photo Edit", type: "Photo" },
+    { src: "/dummy/img6.jpg", alt: "Short Film Clip", type: "Video" },
+  ];
+
+  return (
+    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-black text-gray-100 font-sans selection:bg-indigo-500 selection:text-white">
+
+      {/* Navbar */}
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${showNav ? "top-0" : "-top-20"} ${lastScrollY.current > 50 ? "bg-black/80 backdrop-blur-md border-b border-gray-800 py-3" : "bg-transparent py-5"}`}>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <div className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+            {text.name}
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+            <a href="#services" className="hover:text-indigo-400 transition-colors">{text.nav.services}</a>
+            <a href="#gallery" className="hover:text-indigo-400 transition-colors">{text.nav.gallery}</a>
+            <a href="#contact" className="hover:text-indigo-400 transition-colors">{text.nav.contact}</a>
+          </div>
+          <button
+            onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-full text-xs font-bold hover:bg-gray-700 transition-colors border border-gray-700"
+          >
+            <Globe size={14} className="text-indigo-400" /> {lang === "ar" ? "English" : "عربي"}
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="pt-32 pb-24 px-6 min-h-[80vh] flex items-center bg-gray-950/50">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-indigo-400 text-sm font-semibold mb-3 tracking-widest uppercase animate-on-scroll opacity-0 translate-y-10">{text.title}</p>
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight bg-gradient-to-r from-indigo-300 to-white bg-clip-text text-transparent animate-on-scroll opacity-0 translate-y-10 delay-100">{text.heroTitle}</h1>
+          <p className="text-gray-400 text-lg mb-10 max-w-2xl mx-auto animate-on-scroll opacity-0 translate-y-10 delay-200">{text.heroDesc}</p>
+          <a href="#contact" className="inline-flex items-center gap-2 px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-full text-lg transition-all shadow-lg shadow-indigo-600/40 transform hover:scale-[1.05] animate-on-scroll opacity-0 translate-y-10 delay-300">
+            {text.nav.contact}
+            <ArrowRight size={20} />
+          </a>
+        </div>
+      </header>
+
+      {/* Services Section */}
+      <section id="services" className="py-24 px-6 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-12 text-center text-indigo-400 animate-on-scroll opacity-0 translate-y-10">{text.nav.services}</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {text.servicesList.map((service, index) => (
+              <div key={index} className="p-8 bg-gray-950 border border-gray-800 rounded-2xl shadow-xl hover:border-indigo-600 transition-all duration-300 animate-on-scroll opacity-0 translate-y-10" style={{ transitionDelay: `${index * 100}ms` }}>
+                <service.icon size={36} className="text-indigo-400 mb-4" />
+                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                <p className="text-gray-400">{service.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section id="gallery" className="py-24 px-6 bg-gray-950">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-12 text-center animate-on-scroll opacity-0 translate-y-10">{text.galleryTitle}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {dummyGalleryImages.map((item, index) => (
+              <div key={index} className="group relative overflow-hidden rounded-xl border border-gray-800 shadow-lg animate-on-scroll opacity-0 translate-y-10" style={{ transitionDelay: `${index * 80}ms` }}>
+                <img src={item.src} alt={item.alt} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/60 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-sm font-bold text-indigo-400">{item.type}</p>
+                  <p className="text-lg font-semibold">{item.alt}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-12 animate-on-scroll opacity-0 translate-y-10">
+            <a href="#" className="inline-flex items-center gap-2 px-6 py-3 border border-indigo-600 text-indigo-400 font-semibold rounded-full hover:bg-indigo-600 hover:text-white transition-colors">
+              {isRTL ? "شاهد المزيد" : "View More"}
+              <ArrowRight size={18} />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-24 px-6 bg-gray-950">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4 animate-on-scroll opacity-0 translate-y-10">{text.contactTitle}</h2>
+          <p className="text-gray-400 mb-10 animate-on-scroll opacity-0 translate-y-10">{isRTL ? "تواصل معي لمناقشة تفاصيل مشروعك القادم" : "Contact me to discuss the details of your next project."}</p>
+
+          {/* Contact Info */}
+          <div className="text-gray-300 mb-10 space-y-3 animate-on-scroll opacity-0 translate-y-10">
+            <h3 className="text-xl font-bold text-indigo-400 flex items-center justify-center gap-2">
+              <Phone size={18} /> {isRTL ? "أرقام الهاتف" : "Phone Numbers"}
+            </h3>
+            {text.phones.map((phone, i) => (
+              <a
+                key={`phone-${i}`}
+                href={`https://wa.me/${phone.wa}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center text-lg hover:text-indigo-400 transition-colors gap-2"
+              >
+                <FaWhatsapp className="text-green-500" /> {phone.display}
+              </a>
+            ))}
+
+            <h3 className="text-xl font-bold text-indigo-400 mt-6 flex items-center justify-center gap-2">
+              <Mail size={18} /> {isRTL ? "البريد الإلكتروني" : "Email Addresses"}
+            </h3>
+            {text.emails.map((email, i) => (
+              <a key={`email-${i}`} href={`mailto:${email}`} className="text-lg hover:text-indigo-400 transition-colors block">{email}</a>
+            ))}
+          </div>
+
+          <div className="bg-gray-900 border border-gray-800 p-8 md:p-12 rounded-3xl shadow-2xl animate-on-scroll opacity-0 translate-y-10 transition-all duration-700">
+            <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert(isRTL ? "شكراً! تم استلام رسالتك." : "Thank you! Your message has been received."); }}>
+              <div className="grid md:grid-cols-2 gap-6">
+                <input type="text" placeholder={isRTL ? "الاسم" : "Your Name"} className="w-full bg-black/40 border border-gray-700 rounded-xl p-4 focus:border-indigo-500 focus:outline-none transition-colors" required />
+                <input type="email" placeholder={text.form.email} className="w-full bg-black/40 border border-gray-700 rounded-xl p-4 focus:border-indigo-500 focus:outline-none transition-colors" required />
+              </div>
+              <textarea rows={5} placeholder={text.form.msg} className="w-full bg-black/40 border border-gray-700 rounded-xl p-4 focus:border-indigo-500 focus:outline-none transition-colors resize-none" required />
+              <button type="submit" className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-[1.01]">
+                {text.form.send}
+              </button>
+            </form>
+          </div>
+
+          <div className="flex justify-center gap-6 mt-16 animate-on-scroll opacity-0 translate-y-10">
+            {[Instagram, Twitter, Youtube, Mail].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                className="p-3 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:bg-indigo-600 hover:text-white transition-colors duration-300 transform hover:scale-110"
+                aria-label={Icon.name}
+              >
+                <Icon size={24} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-gray-800 px-6 bg-black">
+        <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
+          <p>&copy; 2024 {text.name}. {text.footer}.</p>
+        </div>
+      </footer>
+
+    </div>
+  );
+}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page title</title>
+</head>
+<body>
+    
+</body>
+</html>
